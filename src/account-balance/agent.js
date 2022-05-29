@@ -1,6 +1,6 @@
 const BigNumber = require('bignumber.js');
 const {
-  getEthersProvider, Finding, FindingSeverity, FindingType,
+  getEthersProvider, Finding, FindingSeverity, FindingType, getJsonRpcUrl,
 } = require('forta-agent');
 const {
   isFilledString,
@@ -115,6 +115,8 @@ const validateConfig = (config) => {
   return { ok, errMsg };
 };
 
+
+
 const initialize = async (config) => {
   const botState = { ...config };
 
@@ -122,7 +124,16 @@ const initialize = async (config) => {
 
   const multiplier = new BigNumber(10).pow(18);
 
-  botState.provider = getEthersProvider();
+  //botState.provider = getEthersProvider();
+  
+  // Creating a custom provider for Mumbai testnet
+  // Creating custom RPC url to monitor Mumbai testnet
+  const { ethers } = require('ethers');
+  const MUMBAI_RPC_URL = "https://polygon-mumbai.g.alchemy.com/v2/z8w15ajcRmfxfyY3Oct_PGOOBweKPZdz";
+  const mumbaiProvider = new ethers.providers.JsonRpcProvider(MUMBAI_RPC_URL);
+  console.log(`Connected provider network info: ${JSON.stringify(await mumbaiProvider.getNetwork(), null, 2)}`);
+  botState.provider = mumbaiProvider;
+
   botState.accounts = Object.entries(config.contracts).map(([accountName, entry]) => {
     const accountThresholdBN = new BigNumber(entry.thresholdEth).times(multiplier);
     return {
