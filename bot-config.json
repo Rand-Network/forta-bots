@@ -1,0 +1,20 @@
+{
+    "developerAbbreviation": "ADR",
+    "protocolName": "Rand.network",
+    "protocolAbbreviation": "RND",
+    "bots": [
+        {
+            "botType": "account-balance",
+            "name": "Deployer Balance Monitor",
+            "contracts": {
+                "DeployerAddress": {
+                    "address": "0xD87fE99D046e4ed9E44Cf491683C7067b3A716D8",
+                    "thresholdEth": 0.5,
+                    "type": "Info",
+                    "severity": "High"
+                }
+            },
+            "alertMinimumIntervalSeconds": 300
+        }
+    ]
+}
